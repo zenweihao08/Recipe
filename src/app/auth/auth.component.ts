@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { AuthService, AuthSignUpData } from './auth.service';
 import { Subscribable } from 'rxjs';
-
+import { Router, ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-auth',
@@ -11,7 +11,11 @@ import { Subscribable } from 'rxjs';
 })
 export class AuthComponent implements OnInit {
 
-  constructor(private authService:AuthService) { }
+  constructor(private authService:AuthService,
+              private router:Router,
+              private route:ActivatedRoute) { }
+
+
   error:string = null;
   isLoginMode:boolean = true;
   isLoading = false;
@@ -37,8 +41,8 @@ export class AuthComponent implements OnInit {
         authSub = this.authService.signUp(email,password);
       }
       authSub.subscribe(respond=>{
-        console.log(respond);
         this.isLoading = false;
+        this.router.navigate(['../recipe'],{relativeTo:this.route})
       },error=>{
         this.error = error;
         this.isLoading = false;
