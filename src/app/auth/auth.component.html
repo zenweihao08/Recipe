@@ -1,0 +1,23 @@
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <div id="alert" *ngIf="error" class="alert alert-warning">
+                {{error}}
+            </div>
+            <form (ngSubmit)="onSubmit(f)" #f="ngForm">
+                <div class="form-group mt-2">
+                    <label for="email">Email</label>
+                    <input name="email" type="text" required class="form-control" ngModel>
+                </div>
+                <div class="form-group">
+                        <label for="email">Password</label>
+                        <input name="password" type="password" required minlength="6" class="form-control" ngModel>
+                    </div>
+                <div>
+                    <button [disabled]="f.invalid&&f.touched" class="btn btn-success mr-1"><i *ngIf="isLoading" class="fa fa-circle-o-notch fa-spin"></i>  {{isLoginMode?'Login':'Sign Up'}}</button>|
+                    <button type="button" (click)="onSwitchMode()" class="btn btn-success ml-1">{{isLoginMode?'Switch to Sign Up':'Switch to Login'}}</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

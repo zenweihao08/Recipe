@@ -1,0 +1,76 @@
+<h1>更新食谱</h1>
+<div class="row">
+  <div class="col-lg-12">
+      <form [formGroup]="recipe_form" (ngSubmit)="onSubmit()" style="margin-top:1em;">
+          <div class="row">
+              <div class="col-lg-12">
+                  <div class="form-group">
+                      <div class="btn btn-info ml-1 float-right" (click)="onNavigate()">
+                          取消
+                        </div>
+                      <button [disabled]="recipe_form.invalid" class="btn btn-success float-right">保存</button>
+                    </div>
+              </div>
+            </div>
+        <div class="row">
+          <div class="col-lg-12">
+              <div class="form-group">
+                  <label>
+                      菜谱名称
+                  </label>
+                  <input type="text"  name="title" class="form-control"
+                      formControlName="recipe_name">
+              </div>
+          </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="form-group">
+                    <label>
+                        食谱简介
+                    </label>
+                    <textarea name="description"  rows="3" class="form-control" formControlName="recipe_description"d></textarea>
+                </div>
+            </div>
+          </div>
+          <div class="row">
+              <div class="col-lg-12">
+                  <div class="form-group">
+                        <label for="imgUrl">图片链接（link）</label>
+                        <input name="imgUrl" id="imgUrl" type="text" 
+                        class="form-control" 
+                        formControlName="recipe_image"
+                        #imgPreview>
+                    </div>
+              </div>
+            </div>
+          <div class="row">
+            <div class="col-lg-12">
+              <img *ngIf="recipe_form.get('recipe_image').valid" [src]="imgPreview.value" alt="recipe image" class="img-fluid mb-3" style="border-radius: 1.5%;">
+            </div>
+          </div>
+          <div class="row">
+              <div class="col-lg-12" formArrayName="recipe_ing">
+                  <div class="row form-group" *ngFor="let control of getControls();let i = index" [formGroupName]="i">
+                    <div class="col-lg-6">
+                        <div class="input-group mb-3">
+                            <input type="text" class="form-control" formControlName="name" >
+                          </div>
+                      </div>
+                    <div class="col-lg-3">
+                        <input type="number" class="form-control" formControlName="amount" >
+                    </div>
+                    <div class="col-lg-3">
+                          <button class="btn btn-danger" type="button" (click)="onDeleteIng(i)">x</button>
+                    </div>
+              </div>
+              <div class="form-group">
+                  <button type="button" class="btn btn-primary"
+                  (click)=onAddIng()
+                  >添加食材</button>
+                </div>
+            </div>
+          </div>
+        </form>
+  </div>
+</div>

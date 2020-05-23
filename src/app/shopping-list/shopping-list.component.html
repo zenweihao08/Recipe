@@ -1,0 +1,25 @@
+<div class="container">
+        <div class="row">
+                <div class="col-md-12">
+                    <h1 class="mt-5"style="text-align: center;">食材清单</h1>
+                    <app-shopping-edit></app-shopping-edit>
+                    <ul class="list-group" style="margin-left: 20%; margin-right:20%">
+                        <li class="list-group-item" *ngFor="let ing of ingredient;let i = index">
+                            <p>{{ing.name}}: {{ing.amount}}克 
+                                <button 
+                                class="btn btn-danger ml-2" 
+                                style="float: right;"
+                                (click)=onDelete(i)>
+                                删除
+                                </button>
+                                <button 
+                                class="btn btn-success" 
+                                style="float: right;"
+                                (click)=onEdit(i)>
+                                修改
+                                </button></p>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+</div>

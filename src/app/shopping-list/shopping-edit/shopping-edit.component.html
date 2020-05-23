@@ -1,0 +1,30 @@
+<div class="container">
+        <div class="row">
+                <div class="col-xs-12 form-group" >
+                    <form class="border rounded m-3 p-2" 
+                    style="position: relative; left: 65%;" 
+                    #f="ngForm"
+                    (ngSubmit)="onSubmit()">
+                        <div class="row">
+                            <div class="col-sm-7">
+                                <label for="name" class="text-muted">材料名称</label>
+                                <input type="text" name="name" class="form-control" placeholder="食物名称"
+                                    ngModel required #name="ngModel">
+                            </div>
+                            <div class="col-sm-5">
+                                <label for="amount" class="text-muted">重量</label>
+                                <input class="form-control" type="number" name="amount" placeholder="重量（克)" 
+                                ngModel required #amount="ngModel"
+                                pattern="^[1-9]+[0-9]*$">
+                            </div>
+                        </div>
+                        <button *ngIf="!editMode" [disabled]="f.invalid" type="submit" class="btn btn-success mt-3 mr-2 mb-2">添加</button>                        
+                        <button *ngIf="editMode" [disabled]="f.invalid" type="submit" class="btn btn-success mt-3 mr-2 mb-2">更新</button>                        
+
+                        <button type="button" class="btn btn-primary mt-3 mr-2 ml-2 mb-2"(click)="onClear()">清除</button><br>
+                        <small *ngIf="name.invalid&&name.touched||amount.touched&&amount.invalid" class="form-text text-muted">请输入食物名字和重量</small>
+                    </form>
+                </div>
+            </div>
+            
+</div>

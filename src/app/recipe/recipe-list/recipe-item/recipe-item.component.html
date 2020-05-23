@@ -1,0 +1,26 @@
+<h1 class="mt-3"style="text-align: center;">美食菜谱</h1>
+<div class="row">
+        <div *ngFor="let recipe of recipes; let i = index" class="col-md-6">
+                <div class="card" style="width: 15em; margin-top: 1em;">
+                        <img class="card-img-top" class="img-fluid" style="width: 15em; height: 15em;" [src]="recipe.imagePath" alt="{{recipe.name}}">
+                        <div class="card-body" style="text-align: center;">
+                                <h5 class="text-truncate">{{recipe.name}}</h5>
+                                <p class="text-truncate">{{recipe.description}}</p>
+                                <div class="btn-group">
+                                        <button type="button" class="btn btn-primary" routerLinkActive="active" [routerLink]="[i]">查看做法</button>
+                                        <button type="button" class="btn btn-primary dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        <span class="sr-only">Toggle Dropdown</span>
+                                        </button>
+                                        <div class="dropdown-menu">
+                                        <a class="dropdown-item" [routerLink]="['/shopping-list']" (click)="addIngs(i)" style="cursor: pointer;">买食材</a>
+                                        <a class="dropdown-item" [routerLink]="['/recipe',i,'edit']">修改食谱</a>
+                                        <div class="dropdown-divider"></div>
+                                        <a class="dropdown-item" (click)="onDelete(i)">删除</a>
+                                        </div>
+                                        </div>
+                        </div>
+                </div>
+        </div>
+</div>
+
+
