@@ -11,8 +11,7 @@ import { Subscription } from 'rxjs';
   styleUrls: ['./header.component.css']
 })
 export class HeaderComponent implements OnInit,OnDestroy {
-  constructor(private dataService:DataStorageService, 
-              private recipeService:RecipeService,
+  constructor(private dataService:DataStorageService,
               private authService:AuthService) { }
 
   
@@ -35,5 +34,9 @@ export class HeaderComponent implements OnInit,OnDestroy {
 
   ngOnDestroy(): void {
     this.userSub.unsubscribe();
+  }
+
+  signOut(){
+    this.authService.signOut();
   }
 }
