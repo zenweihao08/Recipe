@@ -26,9 +26,12 @@ export class AuthComponent implements OnInit {
   private errorTimeout(){
     setTimeout(()=>{
       this.error = null;
-    },3000)
+    },7000)
   }
 
+  clearError(){
+    this.error = null;
+  }
   onSubmit(f:NgForm){
     if(f.valid){
       const password = f.value.password;
