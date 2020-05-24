@@ -3,6 +3,7 @@ import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { catchError, tap } from 'rxjs/operators';
 import { throwError, Subject, BehaviorSubject } from 'rxjs';
 import { User } from './user.model';
+import { Router } from '@angular/router';
 
 
 export interface AuthSignUpData{
@@ -18,10 +19,11 @@ export interface AuthSignUpData{
 
 @Injectable({providedIn: 'root'})
 export class AuthService {
-    constructor(private http: HttpClient) { }
+    constructor(private http: HttpClient,
+                private router:Router) { }
     
     user = new BehaviorSubject<User>(null);
-
+    private tokenExpirationTimer; 
     private catchErr(error:HttpErrorResponse){
         let errorMessage:string;
         if(!error.error||!error.error.error.message){
@@ -31,16 +33,22 @@ export class AuthService {
             switch(error.error.error.message){ 
                 case 'EMAIL_EXISTS':
                     errorMessage = 'The email address is already in use by another account.';
+                    break;
                 case 'OPERATION_NOT_ALLOWED':
                     errorMessage = "Password sign-in is disabled for this project.";
+                    break;
                 case 'TOO_MANY_ATTEMPTS_TRY_LATER':
                     errorMessage = "We have blocked all requests from this device due to unusual activity. Try again later.";
+                    break;
                 case 'EMAIL_NOT_FOUND':
-                        errorMessage = 'There is no user record corresponding to this identifier. The user may have been deleted.';
+                    errorMessage = 'There is no user record corresponding to this identifier. The user may have been deleted.';
+                    break;
                 case 'INVALID_PASSWORD':
                     errorMessage = "The password is invalid or the user does not have a password.";
+                    break;
                 case 'USER_DISABLED':
                     errorMessage = "The user account has been disabled by an administrator.";
+                    break;
               }
         }
         return throwError(errorMessage);
@@ -50,6 +58,7 @@ export class AuthService {
         const expiresAfter = new Date(new Date().getTime() + +expiryDate*1000);
         const user = new User(email,id,token,expiresAfter);
         this.user.next(user);
+        this.autoLogOut(+expiryDate*1000);
         localStorage.setItem('userData',JSON.stringify(user));
     }
 
@@ -84,6 +93,24 @@ export class AuthService {
         const loadedUser = new User(userData.email,userData.userLocalId,userData._token,new Date(userData._tokenExpiryDate));
         if(loadedUser.token){
             this.user.next(loadedUser);
+            this.autoLogOut(new Date(userData._tokenExpiryDate).getTime()-new Date().getTime());
+        }
+    }
+
+    autoLogOut(expirationTime:number){
+        console.log(expirationTime);
+        this.tokenExpirationTimer = setTimeout(()=>{
+            this.signOut();
+        },expirationTime);
+    }
+
+    signOut(){
+        this.user.next(null);
+        this.router.navigate(['/auth']);
+        localStorage.removeItem('userData');
+        if(this.tokenExpirationTimer){
+            clearTimeout(this.tokenExpirationTimer);
+            this.tokenExpirationTimer = null;
         }
     }
 }
