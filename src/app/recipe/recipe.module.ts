@@ -8,6 +8,7 @@ import { RecipeDetailComponent } from './recipe-detail/recipe-detail.component';
 import { RecipeItemComponent } from './recipe-item/recipe-item.component';
 import { RecipeEditComponent } from './recipe-edit/recipe-edit.component';
 import { RecipeDetailDefaultComponent } from './recipe-detail-default/recipe-detail-default.component';
+import { RecipeRoutingModule } from './recipe-routing.module';
 
 
 
@@ -15,14 +16,8 @@ import { RecipeDetailDefaultComponent } from './recipe-detail-default/recipe-det
     imports: [
         CommonModule,
         ReactiveFormsModule,
-        RouterModule
-    ],
-    exports: [
-        RecipeComponent,
-        RecipeDetailComponent,
-        RecipeItemComponent,
-        RecipeEditComponent,
-        RecipeDetailDefaultComponent
+        RouterModule,
+        RecipeRoutingModule
     ],
     declarations: [
         RecipeComponent,
