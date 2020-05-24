@@ -21,6 +21,7 @@ export class AuthService {
     constructor(private http: HttpClient) { }
     
     user = new BehaviorSubject<User>(null);
+
     private catchErr(error:HttpErrorResponse){
         let errorMessage:string;
         if(!error.error||!error.error.error.message){
@@ -49,6 +50,7 @@ export class AuthService {
         const expiresAfter = new Date(new Date().getTime() + +expiryDate*1000);
         const user = new User(email,id,token,expiresAfter);
         this.user.next(user);
+        localStorage.setItem('userData',JSON.stringify(user));
     }
 
     signUp(email:string,password:string){
@@ -72,5 +74,16 @@ export class AuthService {
         }).pipe(catchError(this.catchErr),tap(resData=>{
             this.handleAuthentication(resData.email,resData.localId,resData.idToken,resData.expiresIn);
         }));
+    }
+
+    autoLogin(){
+        const userData:{email:string,userLocalId:string,_token:string,_tokenExpiryDate:string} = JSON.parse(localStorage.getItem('userData'));
+        if(!userData){
+            return null;
+        }
+        const loadedUser = new User(userData.email,userData.userLocalId,userData._token,new Date(userData._tokenExpiryDate));
+        if(loadedUser.token){
+            this.user.next(loadedUser);
+        }
     }
 }
