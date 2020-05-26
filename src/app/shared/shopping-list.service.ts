@@ -3,9 +3,7 @@ import { Ingredient } from './ingredient.model';
 import { Subject } from 'rxjs';
 
 
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable()
 export class ShoppingListService {
   @Output() updateIng = new Subject <Ingredient[]>();
   @Output() editIng = new Subject <number>();
